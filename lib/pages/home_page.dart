@@ -25,12 +25,17 @@ class HomePage extends StatelessWidget {
               child: Text('ke halaman detail'),
             ),
             SizedBox(height: 50),
-            Obx(() => Text(controller.title.value)),
+            Obx(() {
+              if (controller.isLoading.value) {
+                return CircularProgressIndicator();
+              }
+              return Center(child: Text(controller.title.value));
+            }),
             SizedBox(height: 50),
 
             FilledButton(
               onPressed: () {
-                controller.updateBerita();
+                controller.fetchNews();
               },
               child: Text('update data'),
             ),
