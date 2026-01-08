@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/pages/detail_page.dart';
+import 'package:get/get.dart';
+import 'package:news_app/controllers/news_controller.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    NewsController controller = NewsController();
+
     return Scaffold(
       appBar: AppBar(title: Text('Home Page')),
       body: Center(
@@ -14,13 +17,22 @@ class HomePage extends StatelessWidget {
           children: [
             Text('ini adalah halaman home page'),
             SizedBox(height: 50),
+
             FilledButton(
               onPressed: () {
-                Navigator.of(
-                  context,
-                ).push(MaterialPageRoute(builder: (context) => DetailPage()));
+                Get.toNamed('/detail');
               },
               child: Text('ke halaman detail'),
+            ),
+            SizedBox(height: 50),
+            Obx(() => Text(controller.title.value)),
+            SizedBox(height: 50),
+
+            FilledButton(
+              onPressed: () {
+                controller.updateBerita();
+              },
+              child: Text('update data'),
             ),
           ],
         ),
