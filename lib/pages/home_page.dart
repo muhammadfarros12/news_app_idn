@@ -37,7 +37,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 controller.fetchNews();
               },
-              child: Text('update data'),
+              child: Text('munculkan data berita'),
             ),
           ],
         ),
