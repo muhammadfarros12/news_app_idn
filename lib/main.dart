@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:news_app/pages/detail_page.dart';
 import 'package:news_app/pages/home_page.dart';
+import 'package:news_app/pages/splash_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,8 +18,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
-      initialRoute: '/',
+      initialRoute: '/splashscreen',
       getPages: [
+        GetPage(name: '/splashscreen', page: () => SplashPage()),
         GetPage(name: '/', page: () => HomePage()),
         GetPage(name: '/detail', page: () => DetailPage())
       ],
