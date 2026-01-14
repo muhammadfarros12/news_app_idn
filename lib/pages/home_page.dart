@@ -33,6 +33,7 @@ class HomePage extends StatelessWidget {
                     return ListTile(
                       title: Text(article.title ?? '-'),
                       subtitle: Text(article.description ?? 'No Description'),
+                      onTap: () => Get.toNamed('/detail', arguments: controller.articles[index]),
                     );
                   },
                 );
