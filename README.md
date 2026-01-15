@@ -1,16 +1,22 @@
 # news_app
 
-A new Flutter project.
 
-## Getting Started
+Project ini dibuat untuk **IDN** sebagai materi pembelajaran untuk **Materi Flutter**.
 
-This project is a starting point for a Flutter application.
+## Tentang Proyek
 
-A few resources to get you started if this is your first Flutter project:
+Ini adalah Aplikasi NewsApp yang menggunakan API public dari https://newsapi.org/.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Tech Stack
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **flutter** : framework dart untuk pengembangan aplikasi multi platform.
+
+## Library  
+berikut library yang digunakan di project ini:
+- http
+-  get
+-  flutter_dotenv
+  
+    
+(masih akan terus diupdate sampai selesai pengembangan)  
+
