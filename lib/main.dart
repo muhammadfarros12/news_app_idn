@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:news_app/pages/detail_page.dart';
 import 'package:news_app/pages/home_page.dart';
 import 'package:news_app/pages/splash_page.dart';
+import 'package:news_app/utils/app_colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,11 +23,19 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/splashscreen', page: () => SplashPage()),
         GetPage(name: '/', page: () => HomePage()),
-        GetPage(name: '/detail', page: () => DetailPage())
+        GetPage(name: '/detail', page: () => DetailPage()),
       ],
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        primarySwatch: Colors.blue,
+        primaryColor: AppColors.primary,
+        scaffoldBackgroundColor: AppColors.background,
+        appBarTheme: AppBarTheme(
+          backgroundColor: AppColors.primary,
+          foregroundColor: Colors.white,
+          elevation: 0,
+        ),
       ),
+      debugShowCheckedModeBanner: false,
 
       home: HomePage(),
     );

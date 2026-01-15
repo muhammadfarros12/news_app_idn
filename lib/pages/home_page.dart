@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_app/controllers/news_controller.dart';
+import 'package:news_app/widgets/loading_shimmer.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,28 +11,31 @@ class HomePage extends StatelessWidget {
     NewsController controller = Get.put<NewsController>(NewsController());
 
     return Scaffold(
-      appBar: AppBar(title: Text('Home Page')),
+      appBar: AppBar(
+        title: Text('Home Page'),
+        centerTitle: true,
+        actions: [IconButton(icon: Icon(Icons.search), onPressed: () {})],
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Home page'),
             Expanded(
               child: Obx(() {
-                log('data yang ada sebanyak: ${controller.articles.length}');
                 if (controller.isLoading) {
-                  return CircularProgressIndicator();
+                  return LoadingShimmer();
                 }
-                log('data yang ada sebanyak: ${controller.articles.length}');
                 return ListView.builder(
                   itemCount: controller.articles.length,
                   itemBuilder: (context, index) {
                     final article = controller.articles[index];
-                    log('message: ${article.title}');
                     return ListTile(
                       title: Text(article.title ?? '-'),
                       subtitle: Text(article.description ?? 'No Description'),
-                      onTap: () => Get.toNamed('/detail', arguments: controller.articles[index]),
+                      onTap: () => Get.toNamed(
+                        '/detail',
+                        arguments: controller.articles[index],
+                      ),
                     );
                   },
                 );
