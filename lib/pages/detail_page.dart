@@ -1,6 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_app/models/news_response_model.dart';
+import 'package:news_app/utils/app_colors.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class DetailPage extends StatelessWidget {
   final Article article = Get.arguments;
@@ -9,8 +12,139 @@ class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Detail Page')),
-      body: Center(child: Text('Tesssss')),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 300,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              background: article.urlToImage != null
+                  ? CachedNetworkImage(
+                      imageUrl: article.urlToImage!,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) {
+                        return Container(
+                          height: 200,
+                          color: AppColors.divider,
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      },
+                      errorWidget: (context, url, error) => SizedBox(
+                        height: 200,
+                        child: Center(
+                          child: Icon(
+                            Icons.image_not_supported,
+                            color: AppColors.textHint,
+                            size: 36,
+                          ),
+                        ),
+                      ),
+                    )
+                  : SizedBox(
+                      height: 200,
+                      child: Center(
+                        child: Icon(
+                          Icons.image_not_supported,
+                          color: AppColors.textHint,
+                          size: 36,
+                        ),
+                      ),
+                    ),
+            ),
+            actions: [IconButton(icon: Icon(Icons.share), onPressed: () {})],
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          article.source?.name ?? 'Unknown Source',
+                          style: TextStyle(
+                            color: AppColors.primary,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      Text(
+                        timeago.format(article.publishedAt!),
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    article.title ?? 'No Title Available',
+                    style: TextStyle(
+                      color: AppColors.primary,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  // Description
+                  Text(
+                    article.description ?? 'No Description Available',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  SizedBox(height: 24),
+                  Text(
+                    'Content',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    article.content ?? 'No Content Available',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: Text(
+                        'Read Full Article',
+                        style: TextStyle(color: Colors.white, fontSize: 14),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
