@@ -10,7 +10,7 @@ class DetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Detail Page')),
-      body: Center(child: Text(article.title!)),
+      body: Center(child: Text('Tesssss')),
     );
   }
 }
