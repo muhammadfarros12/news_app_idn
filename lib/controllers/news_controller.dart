@@ -45,4 +45,8 @@ class NewsController extends GetxController {
       _isLoading.value = false;
     }
   }
+
+  Future<void> refreshNews() async {
+    await fetchNews();
+  }
 }

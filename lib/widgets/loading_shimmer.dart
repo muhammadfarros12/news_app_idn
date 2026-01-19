@@ -39,7 +39,7 @@ class _LoadingShimmerState extends State<LoadingShimmer>
       itemCount: 5,
       itemBuilder: (context, index) {
         return Card(
-          margin: EdgeInsets.only(bottom: 16),
+          margin: EdgeInsets.only(bottom: 16, top: 16),
           elevation: 2,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
