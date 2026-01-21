@@ -6,11 +6,7 @@ import 'package:news_app/models/news_response_model.dart';
 import 'package:news_app/utils/app_colors.dart';
 
 class NewsCard extends StatelessWidget {
-  const NewsCard({
-    Key? key,
-    required this.article,
-    required this.onTap,
-  }) : super(key: key);
+  const NewsCard({super.key, required this.article, required this.onTap});
 
   final Article article;
   final VoidCallback onTap;
@@ -70,12 +66,7 @@ class NewsCard extends StatelessWidget {
                     ),
               Row(
                 children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
+                  Expanded(
                     child: Text(
                       article.source!.name!,
                       style: TextStyle(

@@ -1,21 +1,38 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:news_app/models/news_response_model.dart';
+import 'package:news_app/utils/constants.dart';
 
 class NewsService {
-  Future<NewsResponseModel> getTopHeadlines() async {
-    final apiKey = dotenv.env['NEWS_API_KEY'];
+  static const String _baseUrl = Constants.baseUrl;
+  static final String _apiKey = Constants.apiKey;
 
-    final url = Uri.parse(
-      'https://newsapi.org/v2/top-headlines/?country=us&apiKey=$apiKey',
-    );
-
-    final response = await http.get(url);
-
+  Future<NewsResponseModel> getTopHeadlines({
+    String country = Constants.country,
+    String? category,
+    int page = 1,
+    int pageSize = 20,
+  }) async {
     try {
+      final Map<String, dynamic> queryParams = {
+        'apiKey': _apiKey,
+        'country': country,
+        'page': page.toString(),
+        'pageSize': pageSize.toString(),
+      };
+
+      if (category != null && category.isNotEmpty) {
+        queryParams['category'] = category;
+      }
+
+      final url = Uri.parse(
+        '$_baseUrl${Constants.topHeadlines}',
+      ).replace(queryParameters: queryParams);
+
+      final response = await http.get(url);
+      log('Request URL: $url, Status Code: ${response.statusCode}, body: ${response.body}');
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['status'] != 'ok') {
