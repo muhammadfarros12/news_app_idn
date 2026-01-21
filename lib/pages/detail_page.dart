@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:news_app/models/news_response_model.dart';
 import 'package:news_app/utils/app_colors.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailPage extends StatelessWidget {
   final Article article = Get.arguments;
@@ -128,7 +129,7 @@ class DetailPage extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: _openInBrowser,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         padding: EdgeInsets.symmetric(vertical: 16),
@@ -139,6 +140,8 @@ class DetailPage extends StatelessWidget {
                       ),
                     ),
                   ),
+
+                  SizedBox(height: 24),
                 ],
               ),
             ),
@@ -146,5 +149,30 @@ class DetailPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _openInBrowser() async {
+    final rawUrl = article.url;
+
+    if (rawUrl == null || rawUrl.trim().isEmpty) {
+      Get.snackbar(
+        'Error',
+        'Invalid Article URL.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+
+    final Uri url = Uri.parse(rawUrl);
+
+    final success = await launchUrl(url, mode: LaunchMode.externalApplication);
+
+    if (!success) {
+      Get.snackbar(
+        'Error',
+        'Could not launch the article URL.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 }
