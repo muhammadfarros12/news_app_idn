@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:news_app/models/news_response_model.dart';
 import 'package:news_app/utils/app_colors.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -52,7 +54,46 @@ class DetailPage extends StatelessWidget {
                       ),
                     ),
             ),
-            actions: [IconButton(icon: Icon(Icons.share), onPressed: () {})],
+            actions: [
+              IconButton(icon: Icon(Icons.share), onPressed: _shareArticle),
+              PopupMenuButton(
+                onSelected: (value) {
+                  switch (value) {
+                    case 'copy_link':
+                      _copyLink();
+                      break;
+                    case 'open_in_browser':
+                      _openInBrowser();
+                      break;
+                    default:
+                  }
+                },
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem(
+                      value: 'copy_link',
+                      child: Row(
+                        children: [
+                          Icon(Icons.copy, color: Colors.black),
+                          SizedBox(width: 8),
+                          Text('Copy Link'),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 'open_in_browser',
+                      child: Row(
+                        children: [
+                          Icon(Icons.open_in_browser, color: Colors.black),
+                          SizedBox(width: 8),
+                          Text('Open in Browser'),
+                        ],
+                      ),
+                    ),
+                  ];
+                },
+              ),
+            ],
           ),
           SliverToBoxAdapter(
             child: Padding(
@@ -149,6 +190,36 @@ class DetailPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _shareArticle() async {
+    final rawUrl = article.url;
+
+    if (rawUrl == null || rawUrl.trim().isEmpty) {
+      Get.snackbar(
+        'Error',
+        'Invalid Article URL.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+    final Uri url = Uri.parse(rawUrl);
+
+    await SharePlus.instance.share(
+      ShareParams(uri: url, subject: article.title?.trim()),
+    );
+  }
+
+  void _copyLink() async {
+    if (article.url != null) {
+      Clipboard.setData(ClipboardData(text: article.url ?? 'link tidak valid'));
+      Get.snackbar(
+        'Success',
+        'Article link copied to clipboard.',
+        snackPosition: SnackPosition.BOTTOM,
+        duration: Duration(seconds: 2),
+      );
+    }
   }
 
   Future<void> _openInBrowser() async {
