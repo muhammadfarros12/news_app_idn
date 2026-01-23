@@ -32,7 +32,9 @@ class NewsService {
       ).replace(queryParameters: queryParams);
 
       final response = await http.get(url);
-      log('Request URL: $url, Status Code: ${response.statusCode}, body: ${response.body}');
+      log(
+        'Request URL: $url, Status Code: ${response.statusCode}, body: ${response.body}',
+      );
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['status'] != 'ok') {
@@ -44,6 +46,41 @@ class NewsService {
       }
     } catch (e) {
       log('Error in NewsService: $e');
+      throw Exception('Terjadi kesalahan: $e');
+    }
+  }
+
+  Future<NewsResponseModel> searchNews({
+    required String query,
+    int page = 1,
+    int pageSize = 30,
+    String? sortBy,
+  }) async {
+    try {
+      final Map<String, String> queryParams = {
+        'apiKey': _apiKey,
+        'q': query,
+        'page': page.toString(),
+        'pageSize': pageSize.toString(),
+      };
+
+      if (sortBy != null && sortBy.isNotEmpty) {
+        queryParams['sortBy'] = sortBy;
+      }
+
+      final url = Uri.parse(
+        '$_baseUrl${Constants.everything}',
+      ).replace(queryParameters: queryParams);
+
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return NewsResponseModel.fromMap(data);
+      } else {
+        throw Exception('gagal menampilkan berita');
+      }
+    } catch (e) {
       throw Exception('Terjadi kesalahan: $e');
     }
   }

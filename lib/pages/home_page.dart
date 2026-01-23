@@ -17,7 +17,48 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(Constants.nameApp),
         centerTitle: true,
-        actions: [IconButton(icon: Icon(Icons.search), onPressed: () {})],
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              final TextEditingController searchController =
+                  TextEditingController();
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text('Search News'),
+                  content: TextField(
+                    controller: searchController,
+                    decoration: InputDecoration(
+                      hintText: 'Search...',
+                      border: OutlineInputBorder(),
+                    ),
+                    onSubmitted: (value) {
+                      if (value.trim().isEmpty) return;
+                      controller.searchNews(value);
+                      Get.back();
+                    },
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text('Cancel'),
+                    ),
+                    ElevatedButton(
+                      child: Text('Search'),
+                      onPressed: () {
+                        if (searchController.text.isNotEmpty) {
+                          controller.searchNews(searchController.text);
+                          Get.back();
+                        }
+                      },
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Column(

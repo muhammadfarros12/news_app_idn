@@ -61,4 +61,27 @@ class NewsController extends GetxController {
     fetchNews(category: category);
   }
 
+  Future<void> searchNews(String query) async {
+    if (query.isEmpty) return;
+
+    try {
+      _isLoading.value = true;
+      _error.value = '';
+
+      final response = await _service.searchNews(query: query);
+      _articles.value = response.articles ?? [];
+
+    } catch (e) {
+      _error.value = e.toString();
+      
+      Get.snackbar(
+        'Error',
+        'Failed to search news: ${e.toString()}',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } finally {
+      _isLoading.value = false;
+    }
+  }
+
 }
