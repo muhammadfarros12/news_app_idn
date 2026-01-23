@@ -7,12 +7,11 @@ import 'package:news_app/widgets/loading_shimmer.dart';
 import 'package:news_app/widgets/news_card.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
 
+  final NewsController controller = Get.put<NewsController>(NewsController());
   @override
   Widget build(BuildContext context) {
-    NewsController controller = Get.put<NewsController>(NewsController());
-
     return Scaffold(
       appBar: AppBar(
         title: Text(Constants.nameApp),
@@ -20,43 +19,7 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.search),
-            onPressed: () {
-              final TextEditingController searchController =
-                  TextEditingController();
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: Text('Search News'),
-                  content: TextField(
-                    controller: searchController,
-                    decoration: InputDecoration(
-                      hintText: 'Search...',
-                      border: OutlineInputBorder(),
-                    ),
-                    onSubmitted: (value) {
-                      if (value.trim().isEmpty) return;
-                      controller.searchNews(value);
-                      Get.back();
-                    },
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: Text('Cancel'),
-                    ),
-                    ElevatedButton(
-                      child: Text('Search'),
-                      onPressed: () {
-                        if (searchController.text.isNotEmpty) {
-                          controller.searchNews(searchController.text);
-                          Get.back();
-                        }
-                      },
-                    )
-                  ],
-                ),
-              );
-            },
+            onPressed: () => _showSearchDialog(context),
           ),
         ],
       ),
@@ -133,6 +96,43 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showSearchDialog(BuildContext context) {
+    final TextEditingController searchController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Search News'),
+        content: TextField(
+          controller: searchController,
+          decoration: InputDecoration(
+            hintText: 'Search...',
+            border: OutlineInputBorder(),
+          ),
+          onSubmitted: (value) {
+            if (value.trim().isEmpty) return;
+            controller.searchNews(value);
+            Get.back();
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('Cancel'),
+          ),
+          ElevatedButton(
+            child: Text('Search'),
+            onPressed: () {
+              if (searchController.text.isNotEmpty) {
+                controller.searchNews(searchController.text);
+                Get.back();
+              }
+            },
+          ),
+        ],
       ),
     );
   }
