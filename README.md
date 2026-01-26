@@ -1,11 +1,11 @@
-# news_app
+# news app
 
 
-Project ini dibuat untuk **IDN** sebagai materi pembelajaran untuk **Materi Flutter**.
+Project ini dibuat untuk **IDN** sebagai materi pembelajaran untuk **Materi Flutter**.  
 
 ## Tentang Proyek
 
-Ini adalah Aplikasi NewsApp yang menggunakan API public dari https://newsapi.org/.
+Ini adalah Aplikasi News yang menggunakan API public dari https://newsapi.org/.
 
 ## Tech Stack
 
@@ -14,9 +14,13 @@ Ini adalah Aplikasi NewsApp yang menggunakan API public dari https://newsapi.org
 ## Library  
 berikut library yang digunakan di project ini:
 - http
--  get
--  flutter_dotenv
+- get
+- flutter_dotenv
+- cached_network_image
+- timeago
+- url_launcher
+- share_plus
   
-    
-(masih akan terus diupdate sampai selesai pengembangan)  
+
+
 
