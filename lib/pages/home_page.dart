@@ -77,6 +77,11 @@ class HomePage extends StatelessWidget {
                 if (controller.isLoading) {
                   return LoadingShimmer();
                 }
+
+                if (controller.error.isNotEmpty) {
+                  return _buildErrorWidget();
+                }
+
                 return RefreshIndicator(
                   onRefresh: controller.refreshNews,
                   child: ListView.builder(
@@ -131,6 +136,39 @@ class HomePage extends StatelessWidget {
                 Get.back();
               }
             },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildErrorWidget() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.error_outline, size: 64, color: AppColors.error),
+
+          SizedBox(height: 16),
+          Text(
+            'Ada kesalahan terjadi',
+            style: TextStyle(
+              fontSize: 18,
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          SizedBox(height: 8),
+          Text(
+            'Cek koneksi intenet anda',
+            style: TextStyle(color: AppColors.textSecondary),
+          ),
+          SizedBox(height: 24),
+          ElevatedButton(
+            onPressed: controller.refreshNews,
+            style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
+            child: Text('Coba Lagi', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
